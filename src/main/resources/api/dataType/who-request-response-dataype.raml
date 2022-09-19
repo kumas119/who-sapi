@@ -1,0 +1,52 @@
+#%RAML 1.0 Library
+usage:  This library contains datatype of input object and success response object.
+types:
+  report-covid-case-request-type:
+    description: This type is used to send request to api for registring the case to who database.
+    type: object
+    properties:
+      caseType:
+        type: string
+        required: true
+      firstName:
+        type: string
+        required: true
+      lastName:
+        type: string
+        required: true
+      phone:
+        type: string
+        required: true
+      email:
+        type: string
+        required: false
+      dateOfBirth:
+        type: string
+        required: true
+      country:
+        type: string
+        required: true      
+  report-covid-case-response-type:
+    description: This type used to respond back the success status
+    type: object
+    properties:
+      code:
+        type: integer
+        description: status code
+        required: true 
+      message:
+        description: A human readable message that describes the status
+        type: string
+        required: true
+      description:
+        description: A human readable, comprehensive explanation of the status
+        type: string
+        required: false
+      dateTime:
+        description: The date-time stamp of the response
+        type: datetime
+        required: true
+      transactionId:
+        description: Internal identifier of the transaction
+        type: string
+        required: true

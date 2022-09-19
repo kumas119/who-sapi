@@ -1,0 +1,7 @@
+http:
+  port: '8081'
+db:
+  host: 'oracle-85106-0.cloudclusters.net'
+  port: '17906'
+  user: 'dwprod'
+  password: '12345@Lucky'
