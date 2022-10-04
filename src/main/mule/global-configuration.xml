@@ -8,14 +8,12 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
-	<db:config name="Database_dev_config" doc:name="Database Config" doc:id="9f484a17-78b3-41a1-b63a-4b0939f568c0" >
-		<db:oracle-connection host="${secure::db.host}" port="${secure::db.port}" user="${secure::db.user}" password="${secure::db.password}" >
-			<reconnection >
-				<reconnect/>
-			</reconnection>
-			<db:pooling-profile />
-		</db:oracle-connection>
+	<db:config name="dev-env" doc:name="Database Config" doc:id="7b38ebae-c326-4466-84df-c11142ad4e77" >
+		<db:oracle-connection host="${secure::db.host}" user="${secure::db.user}" password="${secure::db.password}" instance="xe" port="${secure::db.port}"/>
 	</db:config>
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="b6caff92-5205-4059-9cf7-cf8397617ff7" file="enc-${env}.yaml" key="12345678password" />
-	<configuration doc:name="Configuration" doc:id="a4b08931-817b-4758-b992-089abea6ab3e" defaultErrorHandler-ref="global-error-handler" />
+	<configuration doc:name="Configuration" doc:id="0521130e-773c-4524-bf69-a94d3cad0d02" defaultErrorHandler-ref="global-error-handler" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="9e40429a-1fad-4612-b15b-1acb6b1f8df2" file="enc-dev.yaml" key="12345678password" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1dc17733-4e9e-4157-8c63-d8961190a3cb" basePath="/covid" >
+		<http:listener-connection host="0.0.0.0" port="${secure::http.port}" />
+	</http:listener-config>
 </mule>

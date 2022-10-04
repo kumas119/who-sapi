@@ -224,6 +224,7 @@ var errors = (((error.description default "" replace "Error validating JSON. Err
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Error Log" doc:id="ee9dae01-a2f0-4fd1-a01a-8f3c4fec5a4a" message="Transaction [#[vars.transactionId]] - Error Code [#[vars.httpStatus]] - Error Message [#[error.errorType.identifier default '']] - Error Description [#[error.description default '']]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="937cf1e0-adec-490b-a5e9-3a5baf585160" message="#[payload]"/>
 	</sub-flow>
 </mule>
 	

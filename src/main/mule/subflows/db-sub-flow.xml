@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 		<flow name="db-sub-flowFlow" doc:id="27897c26-a83c-4822-be77-b1d9a379e3c8" >
 		<logger level="INFO" doc:name="Logger" doc:id="50db65be-293a-4b6c-b053-753f7c935591" message="db-subflow- started with data  #[vars.transactionId] and #[payload] has been started"/>
-		<db:insert doc:name="Insert" doc:id="4e85cf29-b58f-49a9-8a98-30f083f1d1d7" config-ref="Database_dev_config">
+		<db:insert doc:name="Insert" doc:id="4e85cf29-b58f-49a9-8a98-30f083f1d1d7" config-ref="dev-env" autoGenerateKeys="true">
 			<db:sql ><![CDATA[insert into dw_who_db 
 (CASE_TYPE,
 FIRST_NAME,
@@ -33,7 +33,11 @@ values
 	DATE_OF_BIRTH: payload.DATE_OF_BIRTH,
 	COUNTRY: payload.COUNTRY
 }]]]></db:input-parameters>
+			<db:auto-generated-keys-column-names >
+				<db:auto-generated-keys-column-name value="CASE_ID" />
+			</db:auto-generated-keys-column-names>
 		</db:insert>
 		<logger level="INFO" doc:name="Logger" doc:id="d23528ed-015b-4dc4-b762-9e6725a172bd" message="db-sub-flow-has been completed successfully"/>
+		<logger level="INFO" doc:name="Logger" doc:id="0dfbb57d-753f-4d70-96a8-1a997956759f" message="output application/json --- #[payload]"/>
 	</flow>
 </mule>
