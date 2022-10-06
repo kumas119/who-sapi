@@ -1,0 +1,13 @@
+%dw 2.0
+
+type auto_27897c26_a83c_4822_be77_b1d9a379e3c8_Input_Payload = {
+  firstName: String, 
+  lastName: String, 
+  country: String, 
+  phone: String, 
+  dateOfBirth: String, 
+  email?: String, 
+  caseType: String, 
+  _?: Any
+} {"description": "This type is used to send request to api for registring the case to who database."}
+

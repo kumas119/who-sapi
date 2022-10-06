@@ -1,0 +1,11 @@
+#%RAML 1.0 Trait
+usage: Apply this trait to enforce client_id identification.
+headers:
+  client_id:
+    description: Client id to authenticate to system API
+    type: string
+    required: true
+  client_secret:
+    description: Client secret to authenticate to system API
+    type: string
+    required: true

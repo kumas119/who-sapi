@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="post-case-to-whoFlow" doc:id="e11706d1-1f53-4cd7-87a3-c1c4cca52750" >
+		<logger level="INFO" doc:name="Logger" doc:id="69028e85-0d96-4c56-aabe-dcd8075c93bd" message="post-case-to-who-flow started with data  #[vars.transactionId] and #[payload] has been started"/>
+		<ee:transform doc:name="Transform Message" doc:id="4716f262-0d36-4c89-b89f-f74d70842f85" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	CASE_TYPE: payload.caseType as String default "",
+	FIRST_NAME: payload.firstName as String default "",
+	LAST_NAME: payload.lastName as String default "",
+	PHONE: payload.phone as String default "",
+	EMAIL: payload.email as String default "",
+	DATE_OF_BIRTH: payload.email as String default "",
+	COUNTRY: payload.country as String default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="02239408-4f1d-470d-9c07-f5a5c07ab2e8" name="db-sub-flowFlow"/>
+		<ee:transform doc:name="Transform Message" doc:id="9f19845f-10ca-472c-8d67-a2b268f47341" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  code: 200,
+  message: "Success",
+  description: "Case reported successfully",
+  dateTime: now() as String {format: 'dd-MM-yyyy:hh:mm:ss:ms'},
+  transactionId: vars.transactionId
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="45fad816-d450-4c01-ae83-70a115b4b51a" message="post-case-to-who flow has been completed successfuly for transactionid #[vars.transactionId]"/>
+	</flow>
+</mule>

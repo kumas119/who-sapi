@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<db:config name="dev-env" doc:name="Database Config" doc:id="7b38ebae-c326-4466-84df-c11142ad4e77" >
+		<db:oracle-connection host="${secure::db.host}" user="${secure::db.user}" password="${secure::db.password}" instance="xe" port="${secure::db.port}"/>
+	</db:config>
+	<configuration doc:name="Configuration" doc:id="0521130e-773c-4524-bf69-a94d3cad0d02" defaultErrorHandler-ref="global-error-handler" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="9e40429a-1fad-4612-b15b-1acb6b1f8df2" file="enc-${env}.yaml" key="12345678password" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1dc17733-4e9e-4157-8c63-d8961190a3cb" basePath="/covid" >
+		<http:listener-connection host="0.0.0.0" port="${secure::http.port}" />
+	</http:listener-config>
+	<api-gateway:autodiscovery apiId="${apiid}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="f16daa15-4e51-4f0a-8d63-486c0e4ced99" flowRef="who-sapi-main" />
+</mule>

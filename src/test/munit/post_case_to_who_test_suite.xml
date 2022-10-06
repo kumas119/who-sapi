@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="post-case-to-who-test-suite.xml" />
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="ca1e7c38-bcf2-4ce9-a14f-1e02510fd7ce" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<munit:test name="post_case_to_who_test_suite_success_case" doc:id="6131bc1b-dec1-400c-b08a-a67fac850569" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="post:\cases:application\json:who-sapi-config" />
+			<munit:enable-flow-source value="who-sapi-main" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="3d20d8c1-20f6-4419-ba4c-f9d2e6b9637b" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4e85cf29-b58f-49a9-8a98-30f083f1d1d7" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://test_case_flow_success_case/db_select_output_data.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<set-payload doc:name="Set Payload" doc:id="766b1a25-3014-40b1-a689-6cabdefee5a9" value="#[output application/json --- readUrl('classpath://test_case_flow_success_case/flow_input_data.dwl')]"/>
+			<http:request method="POST" doc:name="Request" doc:id="08d0309d-9a6b-4059-86b8-ee1d6de5c033" config-ref="HTTP_Request_configuration" path="/covid/v1/cases">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	client_secret : 123,
+	client_id : 123
+}]]]></http:headers>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform Message" doc:id="fcfb70d5-79a8-4ac2-9dab-135f09648b4f" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"code": payload.code,
+	"message": payload.message,
+	"description": payload.description	
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="INFO" doc:name="Logger" doc:id="fd867618-fec6-4b13-87ae-e025a8bd7094" message="data validation with payload -- #[payload] has been started."/>
+			<munit-tools:assert doc:name="Assert expression" doc:id="6d2907ac-aa96-480b-acf8-538aedb46561" >
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import test_case_flow_success_case::success_flow_final_output
+ ---
+success_flow_final_output::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

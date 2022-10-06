@@ -1,0 +1,48 @@
+#%RAML 1.0
+title: who-sapi
+version: v1
+baseUri: http://{environment}/covid/{version}/
+baseUriParameters:
+  environment:
+    description: DEV, TEST, UAT, PROD
+    enum: ["uho-dev-who-sapi.us-e2.cloudhub.io","uho-test-who-sapi.us-e2.cloudhub.io", "uho-uat-who-sapi.us-e2.cloudhub.io", "uho-prod-who-sapi.us-e2.cloudhub.io"]
+traits:
+  client-id-enforcement: !include /exchange-module/traits/client-id-enforcement.raml
+  correlation-id-header: !include /exchange-module/traits/correlation-id-header.raml
+  transaction-header: !include /exchange-module/traits/transaction-header.raml
+uses:
+  who-request-response-dataype: /dataType/who-request-response-dataype.raml
+  error-response-type: /dataType/commonDataType.raml
+/cases:
+  post:
+    is: [client-id-enforcement,correlation-id-header,transaction-header]
+    body:
+      application/json:
+        type: who-request-response-dataype.report-covid-case-request-type
+        example: !include /dataType/example/RequestBodyExample.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: who-request-response-dataype.report-covid-case-response-type
+            example: !include /dataType/example/successResponseBody200.json
+      400:
+        body:
+          application/json:
+            type: error-response-type.errorResponseType
+            example: !include /dataType/example/400-Error-Response.json
+      500:
+        body:
+          application/json:
+            type: error-response-type.errorResponseType
+            example: !include /dataType/example/500-Error-Response.json
+      503:
+        body:
+          application/json:
+            type: error-response-type.errorResponseType
+            example: !include /dataType/example/503-Error-Response.json   
+
+
+
+    
+      

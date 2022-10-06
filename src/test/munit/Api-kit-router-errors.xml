@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="who-sapi-test-suite.xml" />
+	<munit:test name="Api-kit-router-method-not-allowed" doc:id="5c13aa70-4024-4fb2-b9b0-39559b6271ee" description="Test" expectedErrorType="APIKIT:METHOD_NOT_ALLOWED">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="3001b936-9ba1-487a-81d1-2b258674d46b" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="who-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to who-sapi-main" doc:id="631cf5e3-bc5e-404b-97c4-c9b89d116be3" name="who-sapi-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="8f8479b1-e808-4b14-afd2-b800f71d242d" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="Api-kit-router-bad-request" doc:id="9386e8ae-a057-4a87-92c4-e587cb26332f" description="Test" expectedErrorType="APIKIT:BAD_REQUEST" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c9bc030b-9da6-4eb2-9f83-5c13fc36cda2" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="who-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to who-sapi-main" doc:id="166a3d39-125d-4087-8fd5-edd0839c6556" name="who-sapi-main" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="46c13a6e-48cf-4da2-b847-380c4dafcf5a" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="Api-kit-router-not-acceptable" doc:id="6a2e4ab4-b88e-4b50-97d1-120d04dd3dba" description="Test" expectedErrorType="APIKIT:NOT_ACCEPTABLE" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="35d990ca-419a-4c67-8ab1-3f7c65d058be" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="who-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to who-sapi-main" doc:id="db4593b0-46c1-43f9-85ff-5fb673acd6af" name="who-sapi-main" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="5ab60ff1-ff30-471f-a7bd-9a32400dc800" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="Api-kit-router-not-found" doc:id="bef89d01-2628-4de7-99cb-28a7e323da52" description="Test" expectedErrorType="APIKIT:NOT_FOUND" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="2e651b78-df0a-4be3-9a24-eb0624aebd0b" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="who-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to who-sapi-main" doc:id="4f3d87ce-00c8-49f1-858a-040a0f882020" name="who-sapi-main" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="ee1eb96c-60f2-43e7-9715-fdb96e1a9abc" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="Api-kit-router-unsupported-media-type" doc:id="57fcda99-999a-438c-92d7-fa0a453f2ceb" description="Test" expectedErrorType="APIKIT:UNSUPPORTED_MEDIA_TYPE" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="3e5d4f39-8601-4bcf-9f2c-8fbcba39b1c6" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="who-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to who-sapi-main" doc:id="d1453d4f-40a3-40ef-b09a-ea98f8bd4567" name="who-sapi-main" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="b277c5f1-2347-42c9-8510-99635056ec2c" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
