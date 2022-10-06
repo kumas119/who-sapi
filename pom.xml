@@ -36,7 +36,7 @@
 						<extensions>true</extensions>
 						<configuration>
 							<cloudHubDeployment>
-								<environment>uat</environment>
+								<environment>test</environment>
 								<applicationName>${applicationName}</applicationName>
 								<workerType>${workerType}</workerType>
 								<workers>${workers}</workers>
